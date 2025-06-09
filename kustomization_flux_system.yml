@@ -1,43 +1,37 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Reference to the namespace where resources will be deployed
-namespace: flux-system
+# Namespace where these resources will be deployed by Flux
+namespace: web-services
 
-# List of resources to be included
+# List of resource files to include
 resources:
-  - namespace.yaml
   - deployment.yaml
   - service.yaml
 
-# Common labels to be added to all resources
+# Common labels to be applied to all resources managed by this Kustomization
 commonLabels:
-  app.kubernetes.io/name: your-app-name
-  app.kubernetes.io/part-of: your-project
-  app.kubernetes.io/managed-by: flux
+  app.kubernetes.io/name: my-nginx-app
+  app.kubernetes.io/instance: my-nginx-instance-01
+  app.kubernetes.io/version: "1.25"
+  app.kubernetes.io/component: webserver
+  app.kubernetes.io/part-of: my-application-suite
+  app.kubernetes.io/managed-by: kustomize
 
-# Common annotations
-commonAnnotations:
-  fluxcd.io/automated: "true"
-  fluxcd.io/tag.container: glob:*
+# You can also specify images to ensure a specific version is used,
+# or to change the registry.
+images:
+  - name: nginx # Original image name used in deployment.yaml
+    newName: nginx # Can be changed to a different registry/path if needed
+    newTag: 1.25.4 # Overrides the tag in deployment.yaml
 
-# ConfigMap and Secret generators if needed
-# configMapGenerator:
-#   - name: app-config
-#     files:
-#       - configs/app-config.properties
+# Example of adding a prefix to all resource names
+# namePrefix: prod-
 
-# secretGenerator:
-#   - name: app-secrets
-#     files:
-#       - secrets/credentials.yaml
+# Example of adding a suffix to all resource names
+# nameSuffix: -v1
 
-# Images to be used
-# images:
-#   - name: your-registry.azurecr.io/your-app
-#     newName: your-registry.azurecr.io/your-app
-#     newTag: latest
-
-# Patches to apply
-# patches:
-#   - path: patches/deployment-patch.yaml
+# Example of a simple patch (e.g., to increase replicas for a specific environment)
+# This assumes you have a file named 'increase-replicas.yaml'
+# patchesStrategicMerge:
+#   - increase-replicas.yaml

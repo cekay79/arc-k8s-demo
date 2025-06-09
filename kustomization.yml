@@ -5,8 +5,9 @@ namespace: flux-system
 
 # List of resource files to include
 resources:
-  - deployment.yml
-  - service.yml
+  #- deployment.yml
+  #- service.yml
+  - namespace.yaml
 
 # Common labels to be applied to all resources managed by this Kustomization
 commonLabels:

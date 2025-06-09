@@ -6,8 +6,8 @@ namespace: web-services
 
 # List of resource files to include
 resources:
-  - deployment.yaml
-  - service.yaml
+  - deployment.yml
+  - service.yml
 
 # Common labels to be applied to all resources managed by this Kustomization
 commonLabels:

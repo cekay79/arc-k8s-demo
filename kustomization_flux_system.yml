@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Reference to the namespace where resources will be deployed
+namespace: flux-system
+
+# List of resources to be included
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+
+# Common labels to be added to all resources
+commonLabels:
+  app.kubernetes.io/name: your-app-name
+  app.kubernetes.io/part-of: your-project
+  app.kubernetes.io/managed-by: flux
+
+# Common annotations
+commonAnnotations:
+  fluxcd.io/automated: "true"
+  fluxcd.io/tag.container: glob:*
+
+# ConfigMap and Secret generators if needed
+# configMapGenerator:
+#   - name: app-config
+#     files:
+#       - configs/app-config.properties
+
+# secretGenerator:
+#   - name: app-secrets
+#     files:
+#       - secrets/credentials.yaml
+
+# Images to be used
+# images:
+#   - name: your-registry.azurecr.io/your-app
+#     newName: your-registry.azurecr.io/your-app
+#     newTag: latest
+
+# Patches to apply
+# patches:
+#   - path: patches/deployment-patch.yaml
